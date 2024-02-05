@@ -1,0 +1,63 @@
+<!-- Video Player XSS-->
+<style>
+    #video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: fill;
+           object-fit: fill;
+        -o-object-position: center;
+           object-position: center;
+           z-index:0;
+      }
+    </style>
+
+<!-- Video Code -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<!-- Or if you want a more recent canary version -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+
+
+<!-- Below is modified embed code for HLS.JS from https://github.com/video-dev/hls.js?tab=readme-ov-file#embedding-hlsjs -->
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<!-- Or if you want the latest version from the main branch -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+<video id="video"
+width="1920"
+height="1080"
+loop="true" 
+autoplay="autoplay" 
+controls
+muted>>
+</video>
+
+
+<script>
+  var video = document.getElementById('video');
+  var videoSrc = 'https://liveprodusphoenixeast.akamaized.net/USPhx-HD/Channel-TX-USPhx-AWS-virginia-1/Source-USPhx-16k-1-s6lk2-BP-07-02-81ykIWnsMsg_live.m3u8';
+  if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+  }
+  // HLS.js is not supported on platforms that do not have Media Source
+  // Extensions (MSE) enabled.
+  //
+  // When the browser has built-in HLS support (check using `canPlayType`),
+  // we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video
+  // element through the `src` property. This is using the built-in support
+  // of the plain video element, without using HLS.js.
+  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = videoSrc;
+
+    if (this.config.enableCEA708Captions) { 
+   let channel1 = new OutputFilter(this, 'textTrack1'); 
+   let channel2 = new OutputFilter(this, 'textTrack2'); 
+  
+   this.cea608Parser = new Cea608Parser(0, channel1, channel2); 
+ } 
+  }
+</script>
