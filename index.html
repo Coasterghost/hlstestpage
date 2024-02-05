@@ -1,3 +1,4 @@
+
 <!-- Video Player CSS-->
 <style>
     #video {
@@ -31,7 +32,7 @@ height="1080"
 loop="true" 
 autoplay="autoplay" 
 controls
-muted>
+muted>>
 </video>
 
 
@@ -53,11 +54,6 @@ muted>
   else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = videoSrc;
 
-    if (this.config.enableCEA708Captions) { 
-   let channel1 = new OutputFilter(this, 'textTrack1'); 
-   let channel2 = new OutputFilter(this, 'textTrack2'); 
-  
-   this.cea608Parser = new Cea608Parser(0, channel1, channel2); 
- } 
+
   }
 </script>
